@@ -22,14 +22,14 @@ pub fn run() {
                 0.25,
             );
 
-            println!("{}", write_color(&pixel_color));
+            println!("{}", write_color(pixel_color));
         }
     }
 
     eprintln!("\nDone");
 }
 
-fn write_color(pixel_color: &math::Color) -> String {
+fn write_color(pixel_color: math::Color) -> String {
     let ir = (255.999 * pixel_color.x()) as i32;
     let ig = (255.999 * pixel_color.y()) as i32;
     let ib = (255.999 * pixel_color.z()) as i32;
