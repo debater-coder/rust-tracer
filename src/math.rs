@@ -1,6 +1,6 @@
 use std::ops;
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vector3(f64, f64, f64);
 
 impl Vector3 {
@@ -13,11 +13,29 @@ impl Vector3 {
     pub fn z(&self) -> f64 {
         self.2
     }
-}
 
-impl PartialEq for Vector3 {
-    fn eq(&self, other: &Self) -> bool {
-        self.0 == other.0 && self.1 == other.1 && self.2 == other.2
+    pub fn length_squared(&self) -> f64 {
+        self.0 * self.0 + self.1 * self.1 + self.2 * self.2
+    }
+
+    pub fn length(&self) -> f64 {
+        self.length_squared().sqrt()
+    }
+
+    pub fn dot(&self, other: &Self) -> f64 {
+        self.0 * other.0 + self.1 * other.1 + self.2 * other.2
+    }
+
+    pub fn cross(&self, other: &Self) -> Self {
+        Vector3(
+            self.1 * other.2 - self.2 * other.1,
+            self.2 * other.0 - self.0 * other.2,
+            self.0 * other.1 - self.1 * other.0,
+        )
+    }
+
+    pub fn unit_vector(&self) -> Self {
+        *self / self.length()
     }
 }
 
