@@ -16,17 +16,23 @@ pub fn run() {
         stderr().flush().unwrap_or_default();
 
         for i in 0..image_width {
-            let r = (i as f64) / ((image_width - 1) as f64);
-            let g = (j as f64) / ((image_height - 1) as f64);
-            let b = 0.25;
+            let pixel_color = math::Color::new(
+                i as f64 / (image_width - 1) as f64,
+                j as f64 / (image_height - 1) as f64,
+                0.25,
+            );
 
-            let ir = (255.999 * r) as i32;
-            let ig = (255.999 * g) as i32;
-            let ib = (255.999 * b) as i32;
-
-            println!("{ir} {ig} {ib}");
+            println!("{}", write_color(&pixel_color));
         }
     }
 
     eprintln!("\nDone");
+}
+
+fn write_color(pixel_color: &math::Color) -> String {
+    let ir = (255.999 * pixel_color.x()) as i32;
+    let ig = (255.999 * pixel_color.y()) as i32;
+    let ib = (255.999 * pixel_color.z()) as i32;
+
+    format!("{ir} {ig} {ib}")
 }
