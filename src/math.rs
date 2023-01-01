@@ -1,7 +1,7 @@
 use std::ops;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Vector3(f64, f64, f64);
+pub struct Vector3(pub f64, pub f64, pub f64);
 
 impl Vector3 {
     pub fn new(x: f64, y: f64, z: f64) -> Vector3 {
@@ -99,6 +99,14 @@ impl ops::Mul<f64> for Vector3 {
     }
 }
 
+impl ops::Mul<Vector3> for f64 {
+    type Output = Vector3;
+
+    fn mul(self, rhs: Vector3) -> Self::Output {
+        Vector3(self * rhs.0, self * rhs.1, self * rhs.2)
+    }
+}
+
 impl ops::MulAssign<f64> for Vector3 {
     fn mul_assign(&mut self, rhs: f64) {
         self.0 *= rhs;
@@ -188,5 +196,21 @@ mod tests {
     #[test]
     fn vector_neg() {
         assert_eq!(-Vector3(1.0, 2.0, 3.0), Vector3(-1.0, -2.0, -3.0));
+    }
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct Ray {
+    pub origin: Point3,
+    pub direction: Vector3,
+}
+
+impl Ray {
+    pub fn new(origin: Point3, direction: Vector3) -> Self {
+        Ray { origin, direction }
+    }
+
+    pub fn at(&self, t: f64) -> Point3 {
+        self.origin + self.direction * t
     }
 }
