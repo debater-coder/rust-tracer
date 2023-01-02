@@ -2,7 +2,7 @@ use std::io::{stderr, Write};
 
 use hittable::HittableList;
 use math::{Color, Ray};
-use rand::{thread_rng, Rng};
+use rand::{rngs::ThreadRng, thread_rng, Rng};
 
 use crate::{camera::Camera, hittable::Sphere, math::Point3, utils::write_color};
 
@@ -11,9 +11,20 @@ pub mod hittable;
 pub mod math;
 pub mod utils;
 
-fn ray_color(ray: Ray, world: &HittableList) -> Color {
-    if let Some(rec) = world.hit(ray, 0.0, f64::INFINITY) {
-        return 0.5 * (rec.normal + Color::new(1.0, 1.0, 1.0));
+fn ray_color(ray: Ray, world: &HittableList, rng: &mut ThreadRng, depth: usize) -> Color {
+    if depth <= 0 {
+        return Color::new(0.0, 0.0, 0.0);
+    }
+
+    if let Some(rec) = world.hit(ray, 0.001, f64::INFINITY) {
+        let target = rec.point + rec.normal + utils::random_in_unit_sphere(rng);
+        return 0.5
+            * ray_color(
+                Ray::new(rec.point, target - rec.point),
+                world,
+                rng,
+                depth - 1,
+            );
     }
 
     let unit_direction = ray.direction.unit_vector();
@@ -28,6 +39,7 @@ pub fn run() {
     let image_width = 400;
     let image_height = (image_width as f64 / aspect_ratio) as i32;
     let samples_per_pixel = 100;
+    let max_depth = 50;
 
     // World
     let mut world = hittable::HittableList::new();
@@ -53,7 +65,7 @@ pub fn run() {
                 let u = (i as f64 + rng.gen::<f64>()) / (image_width - 1) as f64;
                 let v = (j as f64 + rng.gen::<f64>()) / (image_height - 1) as f64;
 
-                pixel_color += ray_color(camera.ray(u, v), &world);
+                pixel_color += ray_color(camera.ray(u, v), &world, &mut rng, max_depth);
             }
 
             println!("{}", write_color(pixel_color, samples_per_pixel));
