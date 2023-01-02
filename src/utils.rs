@@ -42,3 +42,7 @@ pub fn random_in_unit_sphere(rng: &mut ThreadRng) -> Vector3 {
 pub fn random_unit_vector(rng: &mut ThreadRng) -> Vector3 {
     random_in_unit_sphere(rng).unit_vector()
 }
+
+pub fn reflect(v: Vector3, n: Vector3) -> Vector3 {
+    v - 2.0 * v.dot(&n) * n
+}
