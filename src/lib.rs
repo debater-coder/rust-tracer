@@ -1,13 +1,13 @@
 use std::io::{stderr, Write};
 
-use hittable::HittableList;
+use hittables::HittableList;
 use math::{Color, Ray};
 use rand::{rngs::ThreadRng, thread_rng, Rng};
 
 use crate::{camera::Camera, utils::write_color};
 
 pub mod camera;
-pub mod hittable;
+pub mod hittables;
 pub mod math;
 pub mod utils;
 

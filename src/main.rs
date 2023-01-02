@@ -1,11 +1,11 @@
 use rust_tracer::{
-    hittable::{self, Sphere},
+    hittables::{self, Sphere},
     math::Point3,
 };
 
 fn main() {
     // World
-    let mut world = hittable::HittableList::new();
+    let mut world = hittables::HittableList::new();
     world.add(Box::new(Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5)));
     world.add(Box::new(Sphere::new(Point3::new(0.0, -100.5, -1.0), 100.0)));
 
