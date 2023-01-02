@@ -2,7 +2,7 @@ use rand::rngs::ThreadRng;
 
 use crate::math::{Color, Vector3};
 
-pub fn write_color(pixel_color: Color, samples_per_pixel: i32) -> String {
+pub fn write_color(pixel_color: Color, samples_per_pixel: u32) -> String {
     let scale = 1.0 / samples_per_pixel as f64;
     let pixel_color = pixel_color * scale;
 
