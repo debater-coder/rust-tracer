@@ -86,6 +86,7 @@ fn ray_color(ray: Ray, world: &HittableList, rng: &mut ThreadRng, depth: usize) 
 /// );
 ///
 /// // Render
+/// rust_tracer::render(400, 100, 50, &world, &camera);
 /// ```
 pub fn render(
     image_width: u32,
