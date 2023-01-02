@@ -1,6 +1,6 @@
 use rust_tracer::{
     hittables::{self, Sphere},
-    materials::{Lambertian, Metal},
+    materials::{Dielectric, Lambertian, Metal},
     math::{Color, Point3},
 };
 
@@ -15,12 +15,12 @@ fn main() {
     world.add(Box::new(Sphere::new(
         Point3::new(0.0, 0.0, -1.0),
         0.5,
-        Box::new(Lambertian::new(Color::new(0.7, 0.3, 0.3))),
+        Box::new(Dielectric::new(1.5)),
     )));
     world.add(Box::new(Sphere::new(
         Point3::new(-1.0, 0.0, -1.0),
         0.5,
-        Box::new(Metal::new(Color::new(0.8, 0.8, 0.8), 0.3)),
+        Box::new(Dielectric::new(1.5)),
     )));
     world.add(Box::new(Sphere::new(
         Point3::new(1.0, 0.0, -1.0),
