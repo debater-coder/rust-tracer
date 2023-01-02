@@ -15,8 +15,8 @@ pub struct Lambertian {
 }
 
 impl Lambertian {
-    pub fn new(albedo: Color) -> Self {
-        Self { albedo }
+    pub fn new(albedo: Color) -> Box<Self> {
+        Box::new(Self { albedo })
     }
 }
 
@@ -41,11 +41,11 @@ pub struct Metal {
 }
 
 impl Metal {
-    pub fn new(albedo: Color, fuzz: f64) -> Self {
-        Self {
+    pub fn new(albedo: Color, fuzz: f64) -> Box<Self> {
+        Box::new(Self {
             albedo,
             fuzz: fuzz.min(1.0),
-        }
+        })
     }
 }
 
@@ -64,13 +64,14 @@ impl Material for Metal {
     }
 }
 
+#[derive(Clone, Copy)]
 pub struct Dielectric {
     pub refraction_index: f64,
 }
 
 impl Dielectric {
-    pub fn new(refraction_index: f64) -> Self {
-        Self { refraction_index }
+    pub fn new(refraction_index: f64) -> Box<Self> {
+        Box::new(Self { refraction_index })
     }
 
     fn reflectance(cosine: f64, refractive_index: f64) -> f64 {

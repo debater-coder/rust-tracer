@@ -49,12 +49,12 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new(center: Point3, radius: f64, material: Box<dyn Material>) -> Self {
-        Self {
+    pub fn new(center: Point3, radius: f64, material: Box<dyn Material>) -> Box<Self> {
+        Box::new(Self {
             center,
             radius,
             material,
-        }
+        })
     }
 }
 
