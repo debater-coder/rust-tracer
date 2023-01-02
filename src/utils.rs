@@ -1,4 +1,4 @@
-use rand::rngs::ThreadRng;
+use rand::{rngs::ThreadRng, Rng};
 
 use crate::math::{Color, Vector3};
 
@@ -52,4 +52,13 @@ pub fn refract(uv: Vector3, n: Vector3, etai_over_etat: f64) -> Vector3 {
     let r_out_perp = etai_over_etat * (uv + cos_theta * n);
     let r_out_parallel = -(1.0 - r_out_perp.length_squared()).abs().sqrt() * n;
     r_out_perp + r_out_parallel
+}
+
+pub fn random_in_unit_disk(rng: &mut ThreadRng) -> Vector3 {
+    loop {
+        let p = Vector3::new(rng.gen_range(-1.0..1.0), rng.gen_range(-1.0..1.0), 0.0);
+        if p.length_squared() < 1.0 {
+            return p;
+        }
+    }
 }

@@ -115,7 +115,7 @@ pub fn render(
                 let u = (i as f64 + rng.gen::<f64>()) / (image_width - 1) as f64;
                 let v = (j as f64 + rng.gen::<f64>()) / (image_height - 1) as f64;
 
-                pixel_color += ray_color(camera.ray(u, v), &world, &mut rng, max_depth);
+                pixel_color += ray_color(camera.ray(u, v, &mut rng), &world, &mut rng, max_depth);
             }
 
             println!("{}", write_color(pixel_color, samples_per_pixel));
