@@ -123,6 +123,14 @@ impl ops::Neg for Vector3 {
     }
 }
 
+impl ops::Mul<Vector3> for Vector3 {
+    type Output = Vector3;
+
+    fn mul(self, rhs: Vector3) -> Self::Output {
+        Vector3(self.0 * rhs.0, self.1 * rhs.1, self.2 * rhs.2)
+    }
+}
+
 pub type Point3 = Vector3;
 pub type Color = Vector3;
 
