@@ -17,7 +17,7 @@ fn ray_color(ray: Ray, world: &HittableList, rng: &mut ThreadRng, depth: usize) 
     }
 
     if let Some(rec) = world.hit(ray, 0.001, f64::INFINITY) {
-        let target = rec.point + rec.normal + utils::random_in_unit_sphere(rng);
+        let target = rec.point + rec.normal + utils::random_in_unit_sphere(rng).unit_vector();
         return 0.5
             * ray_color(
                 Ray::new(rec.point, target - rec.point),
