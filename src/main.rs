@@ -15,7 +15,7 @@ fn main() {
     world.add(Box::new(Sphere::new(
         Point3::new(0.0, 0.0, -1.0),
         0.5,
-        Box::new(Dielectric::new(1.5)),
+        Box::new(Lambertian::new(Color::new(0.1, 0.2, 0.5))),
     )));
     world.add(Box::new(Sphere::new(
         Point3::new(-1.0, 0.0, -1.0),
@@ -23,9 +23,14 @@ fn main() {
         Box::new(Dielectric::new(1.5)),
     )));
     world.add(Box::new(Sphere::new(
+        Point3::new(-1.0, 0.0, -1.0),
+        -0.4,
+        Box::new(Dielectric::new(1.5)),
+    )));
+    world.add(Box::new(Sphere::new(
         Point3::new(1.0, 0.0, -1.0),
         0.5,
-        Box::new(Metal::new(Color::new(0.8, 0.6, 0.2), 1.0)),
+        Box::new(Metal::new(Color::new(0.8, 0.6, 0.2), 0.0)),
     )));
 
     rust_tracer::run(400, 100, 50, &world);
