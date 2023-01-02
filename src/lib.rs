@@ -37,7 +37,7 @@ pub fn run(image_width: i32, samples_per_pixel: i32, max_depth: usize, world: &H
     let image_height = (image_width as f64 / aspect_ratio) as i32;
 
     // Camera
-    let camera = Camera::new();
+    let camera = Camera::new(90.0, aspect_ratio);
 
     // Render
     println!("P3\n{image_width} {image_height}\n255");
