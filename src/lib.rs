@@ -8,6 +8,7 @@ use crate::{camera::Camera, utils::write_color};
 
 pub mod camera;
 pub mod hittables;
+pub mod materials;
 pub mod math;
 pub mod utils;
 
@@ -17,14 +18,11 @@ fn ray_color(ray: Ray, world: &HittableList, rng: &mut ThreadRng, depth: usize) 
     }
 
     if let Some(rec) = world.hit(ray, 0.001, f64::INFINITY) {
-        let target = rec.point + rec.normal + utils::random_in_unit_sphere(rng).unit_vector();
-        return 0.5
-            * ray_color(
-                Ray::new(rec.point, target - rec.point),
-                world,
-                rng,
-                depth - 1,
-            );
+        return if let Some((attenuation, scattered)) = rec.material.scatter(ray, rec, rng) {
+            attenuation * ray_color(scattered, world, rng, depth - 1)
+        } else {
+            Color::new(0.0, 0.0, 0.0)
+        };
     }
 
     let unit_direction = ray.direction.unit_vector();

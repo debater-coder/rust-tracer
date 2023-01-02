@@ -38,3 +38,7 @@ pub fn random_in_unit_sphere(rng: &mut ThreadRng) -> Vector3 {
         }
     }
 }
+
+pub fn random_unit_vector(rng: &mut ThreadRng) -> Vector3 {
+    random_in_unit_sphere(rng).unit_vector()
+}

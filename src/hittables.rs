@@ -1,19 +1,30 @@
-use crate::math::{Point3, Ray, Vector3};
+use crate::{
+    materials::Material,
+    math::{Point3, Ray, Vector3},
+};
 
-pub struct HitRecord {
+pub struct HitRecord<'a> {
     pub point: Point3,
     pub normal: Vector3,
     pub t: f64,
     pub front_face: bool,
+    pub material: &'a Box<dyn Material>,
 }
 
-impl HitRecord {
-    pub fn new(point: Point3, normal: Vector3, t: f64, front_face: bool) -> Self {
+impl<'a> HitRecord<'a> {
+    pub fn new(
+        point: Point3,
+        normal: Vector3,
+        t: f64,
+        front_face: bool,
+        material: &'a Box<dyn Material>,
+    ) -> Self {
         Self {
             point,
             normal,
             t,
             front_face,
+            material,
         }
     }
 
@@ -34,11 +45,16 @@ pub trait Hittable {
 pub struct Sphere {
     pub center: Point3,
     pub radius: f64,
+    pub material: Box<dyn Material>,
 }
 
 impl Sphere {
-    pub fn new(center: Point3, radius: f64) -> Self {
-        Self { center, radius }
+    pub fn new(center: Point3, radius: f64, material: Box<dyn Material>) -> Self {
+        Self {
+            center,
+            radius,
+            material,
+        }
     }
 }
 
@@ -66,7 +82,13 @@ impl Hittable for Sphere {
             }
         }
 
-        let mut hit_record = HitRecord::new(ray.at(root), Vector3::new(0.0, 0.0, 0.0), root, false);
+        let mut hit_record = HitRecord::new(
+            ray.at(root),
+            Vector3::new(0.0, 0.0, 0.0),
+            root,
+            false,
+            &self.material,
+        );
 
         let outward_normal = (hit_record.point - self.center) / self.radius;
         hit_record.set_face_normal(ray, outward_normal);

@@ -41,6 +41,12 @@ impl Vector3 {
     pub fn unit_vector(&self) -> Self {
         *self / self.length()
     }
+
+    pub fn near_zero(&self) -> bool {
+        let small = 1e-8;
+
+        (self.0.abs() < small) && (self.1.abs() < small) && (self.2.abs() < small)
+    }
 }
 
 impl ops::Add for Vector3 {
