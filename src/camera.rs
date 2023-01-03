@@ -5,6 +5,7 @@ use crate::{
     utils::random_in_unit_disk,
 };
 
+#[derive(Clone, Copy)]
 pub struct Camera {
     origin: Point3,
     lower_left_corner: Point3,

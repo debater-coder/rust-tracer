@@ -1,4 +1,4 @@
-use rand::{thread_rng, Rng};
+use rand::{Rng, SeedableRng};
 use rust_tracer::{
     camera::Camera,
     hittables::{HittableList, Sphere},
@@ -16,7 +16,7 @@ fn random_scene() -> HittableList {
         ground_material,
     ));
 
-    let mut rng = thread_rng();
+    let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(10);
 
     for a in -11..11 {
         for b in -11..11 {
@@ -65,9 +65,6 @@ fn random_scene() -> HittableList {
 }
 
 fn main() {
-    // World
-    let world = random_scene();
-
     // Camera
     let lookfrom = Point3::new(13.0, 2.0, 3.0);
     let lookat = Point3::new(0.0, 0.0, 0.0);
@@ -83,5 +80,5 @@ fn main() {
     );
 
     // Render
-    rust_tracer::render(400, 10, 5, &world, &camera);
+    rust_tracer::render_to_stdout(400, 40, 20, random_scene, camera, 4).unwrap();
 }
