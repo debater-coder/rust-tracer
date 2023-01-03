@@ -83,5 +83,5 @@ fn main() {
     );
 
     // Render
-    rust_tracer::render(800, 20, 50, &world, &camera);
+    rust_tracer::render(400, 10, 5, &world, &camera);
 }
