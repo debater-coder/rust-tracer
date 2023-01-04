@@ -80,5 +80,5 @@ fn main() {
     );
 
     // Render
-    rust_tracer::render_to_stdout(400, 40, 20, random_scene, camera, 4).unwrap();
+    rust_tracer::render_to_stdout(400, 16, 10, random_scene, camera, 6).unwrap();
 }

@@ -2,6 +2,7 @@ use std::{
     io::{self, stderr, stdout, Write},
     sync::mpsc,
     thread,
+    time::Instant,
 };
 
 use hittables::HittableList;
@@ -71,8 +72,6 @@ fn render(
                 .push(pixel_color * (1.0 / samples_per_pixel as f64));
         }
     }
-
-    eprintln!("\nDone");
 
     image
 }
@@ -147,6 +146,8 @@ pub fn render_to_stdout<F>(
 where
     F: Fn() -> HittableList + Send + 'static + Copy,
 {
+    let now = Instant::now();
+
     let (tx, rx) = mpsc::channel();
     let image_height = (image_width as f64 / camera.aspect_ratio) as u32;
 
@@ -156,7 +157,7 @@ where
         thread::spawn(move || {
             tx.send(render(
                 image_width,
-                samples_per_pixel / 4,
+                samples_per_pixel / threads as u32,
                 max_depth,
                 &build_world(),
                 camera,
@@ -172,6 +173,8 @@ where
     }
 
     Image::average(results, image_width, image_height).write_as_ppm(&mut stdout().lock())?;
+
+    eprintln!("\nCompleted in {} seconds.", now.elapsed().as_secs());
 
     Ok(())
 }
